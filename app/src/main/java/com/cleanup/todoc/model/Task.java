@@ -2,12 +2,21 @@ package com.cleanup.todoc.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
-
+@Entity(tableName = "task_table", foreignKeys = @ForeignKey(entity = Project.class,
+                                                            parentColumns = "id",
+                                                            childColumns = "projectId"))
 public class Task {
 
+    @PrimaryKey(autoGenerate = true)
     private long id;
+
+    @ColumnInfo(index = true)
     private long projectId;
     // Suppress warning because setName is called in constructor
     @SuppressWarnings("NullableProblems")
@@ -31,6 +40,7 @@ public class Task {
     private void setProjectId(long projectId) {
         this.projectId = projectId;
     }
+    public long getProjectId() { return projectId; }
     @Nullable
     public Project getProject() {
         return Project.getProjectById(projectId);
@@ -45,6 +55,9 @@ public class Task {
     private void setCreationTimestamp(long creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
+    public long getCreationTimestamp() { return creationTimestamp; }
+
+    // Sort Tasks
 
     public static class TaskAZComparator implements Comparator<Task> {
         @Override

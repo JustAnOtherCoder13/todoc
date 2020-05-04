@@ -17,8 +17,6 @@ public class TaskViewModel extends ViewModel {
     private final TaskRepository taskDataSource;
     private final Executor executor;
 
-    private LiveData<List<Task>> tasks;
-
     public TaskViewModel (ProjectRepository projectDataSource, TaskRepository taskDataSource,
                           Executor executor){
 
@@ -26,15 +24,8 @@ public class TaskViewModel extends ViewModel {
         this.taskDataSource = taskDataSource;
         this.executor = executor;
     }
-    public void init(){
-        if (this.tasks != null){
-            return;
-        }
-        tasks = taskDataSource.getAllTasks();
-    }
 
     public LiveData<List<Task>> getAllTasks () { return taskDataSource.getAllTasks();}
-
 
     public void createTask (Task task){ executor.execute(()->{taskDataSource.createTask(task);});}
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
@@ -18,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.di.DI;
+import com.cleanup.todoc.di.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @SuppressWarnings("NullableProblems")
     @NonNull
     private TextView lblNoTasks;
+    private TaskViewModel taskViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
-
+        this.configureViewModel();
         findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
     }
 
@@ -92,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     public void onDeleteTask(Task task) {
         tasks.remove(task);
         updateTasks();
+    }
+
+    private void configureViewModel(){
+        ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
+        this.taskViewModel = new ViewModelProvider(this,viewModelFactory).get(TaskViewModel.class);
+        this.taskViewModel.init();
     }
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {

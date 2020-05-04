@@ -47,6 +47,13 @@ public abstract class Database extends RoomDatabase {
                 contentValues.put("name","Projet Tartampion");
                 contentValues.put("color",0xFFEADAD1);
                 db.insert("project_table", OnConflictStrategy.IGNORE,contentValues);
+
+                ContentValues contentValues1 = new ContentValues();
+                contentValues1.put("id",0);
+                contentValues1.put("projectId",1L);
+                contentValues1.put("name","laver les vitres");
+                contentValues1.put("creationTimestamp",100);
+                db.insert("task_table", OnConflictStrategy.IGNORE,contentValues1);
             }
         };
     }

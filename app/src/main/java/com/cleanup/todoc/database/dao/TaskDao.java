@@ -16,8 +16,8 @@ public interface TaskDao {
     @Query("SELECT*FROM task_table")
     LiveData<List<Task>> getAllTasks();
 
-   @Delete
-   void deleteTask (Task task);
+    @Delete
+    void deleteTask(Task task);
 
     @Insert
     void insertTask(Task task);

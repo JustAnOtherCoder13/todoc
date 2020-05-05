@@ -2,15 +2,6 @@ package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.di.DI;
@@ -35,8 +35,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
     private List<Project> allProjects;
-    @NonNull
-    private List<Task> mTasks = new ArrayList<>();
+    private ArrayList<Task> mTasks = new ArrayList<>();
     private final TasksAdapter adapter = new TasksAdapter(mTasks, this);
     @NonNull
     private SortMethod sortMethod = SortMethod.NONE;
@@ -46,11 +45,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private EditText dialogEditText = null;
     @Nullable
     private Spinner dialogSpinner = null;
-    // Suppress warning is safe because variable is initialized in onCreate
     @SuppressWarnings("NullableProblems")
     @NonNull
     private RecyclerView listTasks;
-    // Suppress warning is safe because variable is initialized in onCreate
     @SuppressWarnings("NullableProblems")
     @NonNull
     private TextView lblNoTasks;
@@ -60,12 +57,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
         listTasks = findViewById(R.id.list_tasks);
         lblNoTasks = findViewById(R.id.lbl_no_task);
-
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
         this.configureViewModel();
@@ -81,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.filter_alphabetical) {
             sortMethod = SortMethod.ALPHABETICAL;
         } else if (id == R.id.filter_alphabetical_inverted) {
@@ -92,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             sortMethod = SortMethod.RECENT_FIRST;
         }
         updateTasks();
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -105,56 +97,40 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void configureViewModel(){
         ViewModelFactory viewModelFactory = DI.provideModelFactory(this.getApplication());
         this.taskViewModel = new ViewModelProvider(this,viewModelFactory).get(TaskViewModel.class);
-        this.taskViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                adapter.updateTasks(tasks);
-                mTasks = taskViewModel.getAllTasks().getValue();
-                tasksSize = tasks.size();
-                updateTasks();
-            }
+        this.taskViewModel.getAllTasks().observe(this, tasks -> {
+            adapter.updateTasks(tasks);
+            mTasks =(ArrayList<Task>) taskViewModel.getAllTasks().getValue();
+            tasksSize = tasks.size();
+            assert mTasks != null;
+            updateTasks();
         });
         this.taskViewModel.getAllProjects().observe(this, projects -> allProjects = taskViewModel.getAllProjects().getValue());}
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
-        // If dialog is open
-        if (dialogEditText != null && dialogSpinner != null) {
-            // Get the name of the task
-            String taskName = dialogEditText.getText().toString();
 
-            // Get the selected project to be associated to the task
+        if (dialogEditText != null && dialogSpinner != null) {
+            String taskName = dialogEditText.getText().toString();
             Project taskProject = null;
             if (dialogSpinner.getSelectedItem() instanceof Project) {
                 taskProject = (Project) dialogSpinner.getSelectedItem();
             }
-
-            // If a name has not been set
             if (taskName.trim().isEmpty()) {
                 dialogEditText.setError(getString(R.string.empty_task_name));
             }
-            // If both project and name of the task have been set
+
             else if (taskProject != null) {
-                // TODO: Replace this by id of persisted task
-                long id = (long) (Math.random() * 50000);
-
-
                 Task task = new Task(
-                        id,
                         taskProject.getId(),
                         taskName,
                         new Date().getTime()
                 );
-
                 addTask(task);
-
                 dialogInterface.dismiss();
             }
-            // If name has been set, but project has not been set (this should never occur)
             else{
                 dialogInterface.dismiss();
             }
         }
-        // If dialog is already closed
         else {
             dialogInterface.dismiss();
         }
@@ -162,12 +138,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     private void showAddTaskDialog() {
         final AlertDialog dialog = getAddTaskDialog();
-
         dialog.show();
-
         dialogEditText = dialog.findViewById(R.id.txt_task_name);
         dialogSpinner = dialog.findViewById(R.id.project_spinner);
-
         populateDialogSpinner();
     }
 
@@ -177,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void updateTasks() {
-        Log.i("test", "onChanged: "+tasksSize);
         if (tasksSize == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
@@ -187,15 +159,19 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             switch (sortMethod) {
                 case ALPHABETICAL:
                     Collections.sort(mTasks, new Task.TaskAZComparator());
+                    adapter.updateTasks(mTasks);
                     break;
                 case ALPHABETICAL_INVERTED:
                     Collections.sort(mTasks, new Task.TaskZAComparator());
+                    adapter.updateTasks(mTasks);
                     break;
                 case RECENT_FIRST:
                     Collections.sort(mTasks, new Task.TaskRecentComparator());
+                    adapter.updateTasks(mTasks);
                     break;
                 case OLD_FIRST:
                     Collections.sort(mTasks, new Task.TaskOldComparator());
+                    adapter.updateTasks(mTasks);
                     break;
             }
         }
@@ -215,14 +191,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         });
 
         dialog = alertBuilder.create();
-
-        // This instead of listener to positive button in order to avoid automatic dismiss
         dialog.setOnShowListener(dialogInterface -> {
-
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(view -> onPositiveButtonClick(dialog));
         });
-
         return dialog;
     }
 

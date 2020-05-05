@@ -20,7 +20,6 @@ public abstract class Database extends RoomDatabase {
     private static volatile Database INSTANCE;
 
     public abstract TaskDao taskDao();
-
     public abstract ProjectDao projectDao();
 
     public static Database getInstance(Context context){

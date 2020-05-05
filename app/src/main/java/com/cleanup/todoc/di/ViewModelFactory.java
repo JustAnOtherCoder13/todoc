@@ -16,8 +16,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private final Executor executor;
     private Application application;
 
-    public ViewModelFactory(Application application,
-                            Executor executor){
+    ViewModelFactory(Application application,
+                     Executor executor){
        this.application = application;
         this.executor = executor;
     }

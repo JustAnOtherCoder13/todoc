@@ -11,7 +11,6 @@ public class Project {
 
     @PrimaryKey
     private final long id;
-
     @NonNull
     private final String name;
     @ColorInt
@@ -24,6 +23,7 @@ public class Project {
     }
 
     @NonNull
+    //TODO replace with database src
     public static Project[] getAllProjects() {
         return new Project[]{
                 new Project(1L, "Projet Tartampion", 0xFFEADAD1),

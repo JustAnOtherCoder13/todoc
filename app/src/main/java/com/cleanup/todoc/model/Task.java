@@ -24,8 +24,7 @@ public class Task {
     private String name;
     private long creationTimestamp;
 
-    public Task(long id, long projectId, @NonNull String name, long creationTimestamp) {
-        this.setId(id);
+    public Task( long projectId, @NonNull String name, long creationTimestamp) {
         this.setProjectId(projectId);
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
@@ -34,7 +33,7 @@ public class Task {
     public long getId() {
         return id;
     }
-    private void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
     private void setProjectId(long projectId) {

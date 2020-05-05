@@ -20,6 +20,5 @@ public class ProjectRepository {
         projectDao = database.projectDao();
         allProjects = projectDao.getAllProjects();
     }
-
     public LiveData<List<Project>> getAllProjects(){return allProjects;}
 }

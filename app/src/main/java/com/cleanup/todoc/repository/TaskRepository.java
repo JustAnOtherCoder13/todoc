@@ -15,7 +15,6 @@ public class TaskRepository {
     private final TaskDao taskDao;
     private LiveData<List<Task>> allTasks;
 
-
     public TaskRepository (Application application){
         Database database = Database.getInstance(application);
         taskDao = database.taskDao();

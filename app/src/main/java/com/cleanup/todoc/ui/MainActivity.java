@@ -1,6 +1,7 @@
 package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.di.DI;
 import com.cleanup.todoc.di.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
@@ -113,7 +115,18 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         allProjects = taskViewModel.getAllProjects();
     }
+    private static class getAllProjectsAsyncTask extends AsyncTask<Void, Void, Void> {
+        private ProjectDao projectDao;
 
+        private getAllProjectsAsyncTask(ProjectDao projectDao) {
+            this.projectDao = projectDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            projectDao.getAllProjects();
+            return null;
+        }}
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
         // If dialog is open
         if (dialogEditText != null && dialogSpinner != null) {

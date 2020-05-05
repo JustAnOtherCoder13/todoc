@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +34,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    private final Project[] allProjects = Project.getAllProjects();
+    private  Project[] allProjects;
     @NonNull
     private final ArrayList<Task> tasks = new ArrayList<>();
     private final TasksAdapter adapter = new TasksAdapter(tasks, this);
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         } else if (id == R.id.filter_recent_first) {
             sortMethod = SortMethod.RECENT_FIRST;
         }
-
         updateTasks();
 
         return super.onOptionsItemSelected(item);
@@ -96,12 +97,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(Task task) {
-        tasks.remove(task);
+        taskViewModel.deleteTask(task);
         updateTasks();
     }
 
     private void configureViewModel(){
-        ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
+        ViewModelFactory viewModelFactory = DI.provideModelFactory(this.getApplication());
         this.taskViewModel = new ViewModelProvider(this,viewModelFactory).get(TaskViewModel.class);
         this.taskViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
             @Override
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 adapter.updateTasks(tasks);
             }
         });
+
+        allProjects = taskViewModel.getAllProjects();
     }
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
@@ -167,12 +170,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void addTask(@NonNull Task task) {
-        tasks.add(task);
+        taskViewModel.createTask(task);
         updateTasks();
     }
 
     private void updateTasks() {
-        if (tasks.size() == 0) {
+        if (taskViewModel.getAllTasks().getValue().size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
         } else {
@@ -191,9 +194,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 case OLD_FIRST:
                     Collections.sort(tasks, new Task.TaskOldComparator());
                     break;
-
             }
-            adapter.updateTasks(tasks);
         }
     }
 

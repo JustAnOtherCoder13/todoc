@@ -19,8 +19,9 @@ public abstract class Database extends RoomDatabase {
 
     private static volatile Database INSTANCE;
 
-    public TaskDao taskDao;
-    public ProjectDao projectDao;
+    public abstract TaskDao taskDao();
+
+    public abstract ProjectDao projectDao();
 
     public static Database getInstance(Context context){
         if (INSTANCE==null){
@@ -42,19 +43,18 @@ public abstract class Database extends RoomDatabase {
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
 
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("id",1L);
-                contentValues.put("name","Projet Tartampion");
-                contentValues.put("color",0xFFEADAD1);
-                db.insert("project_table", OnConflictStrategy.IGNORE,contentValues);
-
-                ContentValues contentValues1 = new ContentValues();
-                contentValues1.put("id",0);
-                contentValues1.put("projectId",1L);
-                contentValues1.put("name","laver les vitres");
-                contentValues1.put("creationTimestamp",100);
-                db.insert("task_table", OnConflictStrategy.IGNORE,contentValues1);
+                createProject(1L, "Projet Tartampion", 0xFFEADAD1, db);
+                createProject(2L, "Projet Lucidia", 0xFFB4CDBA, db);
+                createProject(3L, "Projet Circus", 0xFFA3CED2, db);
             }
         };
+    }
+
+    private static void createProject(long id, String name, int color, SupportSQLiteDatabase db) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", id);
+        contentValues.put("name", name);
+        contentValues.put("color", color);
+        db.insert("project_table", OnConflictStrategy.IGNORE, contentValues);
     }
 }

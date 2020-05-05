@@ -1,13 +1,17 @@
 package com.cleanup.todoc;
 
+import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
+import static com.cleanup.todoc.ui.MainActivity.allProjects;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -16,13 +20,21 @@ import static org.junit.Assert.assertSame;
  * Unit tests for tasks
  *
  * @author Gaëtan HERFRAY
+ *
  */
+
 public class TaskUnitTest {
+    private List<Project> projects;
+
+    @Before
+    public void initDb(){
+        projects = allProjects;
+    }
     @Test
     public void test_projects() {
-        final Task task1 = new Task( 1, "task 1", new Date().getTime());
-        final Task task2 = new Task( 2, "task 2", new Date().getTime());
-        final Task task3 = new Task( 3, "task 3", new Date().getTime());
+        final Task task1 = new Task( projects.get(0).getId(), "task 1", new Date().getTime());
+        final Task task2 = new Task( projects.get(1).getId(), "task 2", new Date().getTime());
+        final Task task3 = new Task( projects.get(2).getId(), "task 3", new Date().getTime());
         final Task task4 = new Task( 4, "task 4", new Date().getTime());
 
         assertEquals("Projet Tartampion", task1.getProject().getName());

@@ -32,7 +32,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    private List<Project> allProjects;
+    public static List<Project> allProjects;
     private ArrayList<Task> mTasks = new ArrayList<>();
     private final TasksAdapter adapter = new TasksAdapter(mTasks, this);
     @NonNull
@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             assert mTasks != null;
             updateTasks();
         });
-        this.taskViewModel.getAllProjects().observe(this, projects -> allProjects = taskViewModel.getAllProjects().getValue());}
+        this.taskViewModel.getAllProjects().observe(this, projects -> allProjects = taskViewModel.getAllProjects().getValue());
+    }
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
 

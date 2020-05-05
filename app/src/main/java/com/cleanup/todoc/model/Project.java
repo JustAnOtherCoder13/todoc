@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import static com.cleanup.todoc.ui.MainActivity.allProjects;
+
 @Entity(tableName = "project_table")
 public class Project {
 
@@ -22,19 +24,9 @@ public class Project {
         this.color = color;
     }
 
-    @NonNull
-    //TODO replace with database src
-    public static Project[] getAllProjects() {
-        return new Project[]{
-                new Project(1L, "Projet Tartampion", 0xFFEADAD1),
-                new Project(2L, "Projet Lucidia", 0xFFB4CDBA),
-                new Project(3L, "Projet Circus", 0xFFA3CED2),
-        };
-    }
-
     @Nullable
     static Project getProjectById(long id) {
-        for (Project project : getAllProjects()) {
+        for (Project project : allProjects) {
             if (project.id == id)
                 return project;
         }

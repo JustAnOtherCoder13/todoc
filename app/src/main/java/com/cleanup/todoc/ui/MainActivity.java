@@ -1,7 +1,6 @@
 package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.di.DI;
 import com.cleanup.todoc.di.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
@@ -36,10 +34,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    private  Project[] allProjects;
+    private List<Project> allProjects;
     @NonNull
-    private final ArrayList<Task> tasks = new ArrayList<>();
-    private final TasksAdapter adapter = new TasksAdapter(tasks, this);
+    private List<Task> mTasks = new ArrayList<>();
+    private final TasksAdapter adapter = new TasksAdapter(mTasks, this);
     @NonNull
     private SortMethod sortMethod = SortMethod.NONE;
     @Nullable
@@ -57,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private TextView lblNoTasks;
     private TaskViewModel taskViewModel;
+    private int tasksSize;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,23 +109,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.updateTasks(tasks);
+                mTasks = taskViewModel.getAllTasks().getValue();
+                tasksSize = tasks.size();
+                updateTasks();
             }
         });
+        this.taskViewModel.getAllProjects().observe(this, projects -> allProjects = taskViewModel.getAllProjects().getValue());}
 
-        allProjects = taskViewModel.getAllProjects();
-    }
-    private static class getAllProjectsAsyncTask extends AsyncTask<Void, Void, Void> {
-        private ProjectDao projectDao;
-
-        private getAllProjectsAsyncTask(ProjectDao projectDao) {
-            this.projectDao = projectDao;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            projectDao.getAllProjects();
-            return null;
-        }}
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
         // If dialog is open
         if (dialogEditText != null && dialogSpinner != null) {
@@ -188,7 +177,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void updateTasks() {
-        if (taskViewModel.getAllTasks().getValue().size() == 0) {
+        Log.i("test", "onChanged: "+tasksSize);
+        if (tasksSize == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
         } else {
@@ -196,16 +186,16 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             listTasks.setVisibility(View.VISIBLE);
             switch (sortMethod) {
                 case ALPHABETICAL:
-                    Collections.sort(tasks, new Task.TaskAZComparator());
+                    Collections.sort(mTasks, new Task.TaskAZComparator());
                     break;
                 case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new Task.TaskZAComparator());
+                    Collections.sort(mTasks, new Task.TaskZAComparator());
                     break;
                 case RECENT_FIRST:
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
+                    Collections.sort(mTasks, new Task.TaskRecentComparator());
                     break;
                 case OLD_FIRST:
-                    Collections.sort(tasks, new Task.TaskOldComparator());
+                    Collections.sort(mTasks, new Task.TaskOldComparator());
                     break;
             }
         }

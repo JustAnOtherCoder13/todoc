@@ -19,7 +19,7 @@ public class TaskViewModel extends AndroidViewModel {
     private final ProjectRepository projectDataSource;
     private final TaskRepository taskDataSource;
     private LiveData<List<Task>> allTasks;
-    private Project[] allProjects;
+    private LiveData<List<Project>> allProjects;
     private final Executor executor;
 
     public TaskViewModel(@NonNull Application application, Executor executor) {
@@ -37,6 +37,6 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void deleteTask (Task task){ executor.execute(()->{taskDataSource.deleteTask(task);});}
 
-    public Project[] getAllProjects () { return allProjects;}
+    public LiveData<List<Project>>getAllProjects () { return allProjects;}
 
 }

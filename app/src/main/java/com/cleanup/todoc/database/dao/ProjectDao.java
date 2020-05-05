@@ -11,5 +11,5 @@ import java.util.List;
 public interface ProjectDao {
 
     @Query("SELECT*FROM project_table")
-    Project[] getAllProjects();
+    LiveData<List<Project>> getAllProjects();
 }

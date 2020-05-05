@@ -2,10 +2,6 @@ package com.cleanup.todoc.di;
 
 import android.app.Application;
 
-import com.cleanup.todoc.database.Database;
-import com.cleanup.todoc.repository.ProjectRepository;
-import com.cleanup.todoc.repository.TaskRepository;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 

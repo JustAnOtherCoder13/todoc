@@ -31,12 +31,12 @@ public class TaskViewModel extends AndroidViewModel {
         this.executor=executor;
     }
 
-    public LiveData<List<Task>> getAllTasks () { return allTasks;}
+    LiveData<List<Task>> getAllTasks() { return allTasks;}
 
-    public void createTask (Task task){ executor.execute(()->{taskDataSource.createTask(task);});}
+    void createTask(Task task){ executor.execute(()-> taskDataSource.createTask(task));}
 
-    public void deleteTask (Task task){ executor.execute(()->{taskDataSource.deleteTask(task);});}
+    void deleteTask(Task task){ executor.execute(()-> taskDataSource.deleteTask(task));}
 
-    public LiveData<List<Project>>getAllProjects () { return allProjects;}
+    LiveData<List<Project>>getAllProjects() { return allProjects;}
 
 }

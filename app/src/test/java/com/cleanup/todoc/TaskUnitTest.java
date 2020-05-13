@@ -16,19 +16,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-/**
- * Unit tests for tasks
- *
- * @author Gaëtan HERFRAY
- *
- */
-
 public class TaskUnitTest {
     private List<Project> projects;
+    private final static Project PROJECT1 = new Project(1L,"Projet Tartampion",0xFFEADAD1);
+    private final static Project PROJECT2 = new Project(2L,"Projet Lucidia",0xFFB4CDBA);
+    private final static Project PROJECT3 = new Project(3L,"Projet Circus",0xFFA3CED2);
 
     @Before
     public void initDb(){
-        projects = allProjects;
+        projects.add(PROJECT1);
+        projects.add(PROJECT2);
+        projects.add(PROJECT3);
     }
     @Test
     public void test_projects() {

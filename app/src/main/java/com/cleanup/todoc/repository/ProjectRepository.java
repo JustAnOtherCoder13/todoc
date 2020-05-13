@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.cleanup.todoc.database.Database;
+import com.cleanup.todoc.database.TaskDatabase;
 import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.model.Project;
 
@@ -16,8 +16,8 @@ public class ProjectRepository {
     private LiveData<List<Project>> allProjects;
 
     public ProjectRepository(Application application){
-        Database database = Database.getInstance(application);
-        projectDao = database.projectDao();
+        TaskDatabase taskDatabase = TaskDatabase.getInstance(application);
+        projectDao = taskDatabase.projectDao();
         allProjects = projectDao.getAllProjects();
     }
     public LiveData<List<Project>> getAllProjects(){return allProjects;}

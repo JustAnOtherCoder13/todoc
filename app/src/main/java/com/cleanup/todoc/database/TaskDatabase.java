@@ -15,19 +15,19 @@ import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 @androidx.room.Database(entities = {Task.class, Project.class}, version = 1, exportSchema = false)
-public abstract class Database extends RoomDatabase {
+public abstract class TaskDatabase extends RoomDatabase {
 
-    private static volatile Database INSTANCE;
+    private static volatile TaskDatabase INSTANCE;
 
     public abstract TaskDao taskDao();
     public abstract ProjectDao projectDao();
 
-    public static Database getInstance(Context context){
+    public static TaskDatabase getInstance(Context context){
         if (INSTANCE==null){
-            synchronized (Database.class){
+            synchronized (TaskDatabase.class){
                 if (INSTANCE==null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            Database.class,"TaskDatabase.db")
+                            TaskDatabase.class,"TaskDatabase.db")
                             .addCallback(prepopulateDatabase())
                             .build();
                 }

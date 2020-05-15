@@ -32,6 +32,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
+    //TODO is it right way to do?
     public static List<Project> allProjects;
     private ArrayList<Task> mTasks = new ArrayList<>();
     private final TasksAdapter adapter = new TasksAdapter(mTasks, this);
@@ -116,7 +117,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             if (taskName.trim().isEmpty()) {
                 dialogEditText.setError(getString(R.string.empty_task_name));
             }
-
+                //TODO Before taskId was set randomly here and todo notify
+            //to change with generated id, but as is autoGenerate with room,
+            //we have nothing to do
             else if (taskProject != null) {
                 Task task = new Task(
                         taskProject.getId(),

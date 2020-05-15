@@ -92,7 +92,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
                 imgProject.setVisibility(View.INVISIBLE);
                 lblProjectName.setText("");
             }
-
         }
     }
 }

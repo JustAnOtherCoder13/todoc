@@ -76,7 +76,8 @@ public class TaskDaoTest {
         //Get the first project in project's list
         Project projectAdded = projects.get(0);
         //Assert project added match to static values
-        assertTrue(projectAdded.getId() == PROJECT_ID && projectAdded.getName().equals(PROJECT_NAME)
+        assertTrue(projectAdded.getId() == PROJECT_ID
+                && projectAdded.getName().equals(PROJECT_NAME)
                             && projectAdded.getColor() == PROJECT_COLOR);
     }
     @Test
@@ -103,7 +104,6 @@ public class TaskDaoTest {
         tasks = LiveDataTestUtil.getValue(database.taskDao().getAllTasks());
         //Assert task's list is now empty
         assertTrue(tasks.isEmpty());
-
     }
 
 }

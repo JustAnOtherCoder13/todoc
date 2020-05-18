@@ -25,6 +25,7 @@ public class TaskUnitTest {
     private long projectId2;
     private long projectId3;
 
+//TODO How to do else
     @Before
     public void initDb(){projects = generateProjects();
     projectId1 = projects.get(0).getId();

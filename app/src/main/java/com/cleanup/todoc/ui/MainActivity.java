@@ -117,9 +117,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             if (taskName.trim().isEmpty()) {
                 dialogEditText.setError(getString(R.string.empty_task_name));
             }
-                //TODO Before taskId was set randomly here and todo notify
-            //to change with generated id, but as is autoGenerate with room,
-            //we have nothing to do
             else if (taskProject != null) {
                 Task task = new Task(
                         taskProject.getId(),

@@ -26,6 +26,7 @@ import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -33,9 +34,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
     //TODO is it right way to do?
-    public static List<Project> allProjects;
+    public static List<Project> allProjects = Collections.emptyList();
     private ArrayList<Task> mTasks = new ArrayList<>();
-    private final TasksAdapter adapter = new TasksAdapter(mTasks, this);
+    private  TasksAdapter adapter;
     @NonNull
     private SortMethod sortMethod = SortMethod.NONE;
     @Nullable
@@ -56,13 +57,22 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
+        this.configureViewModel();
+        this.initRecyclerView();
+    }
+
+    private void initView() {
         setContentView(R.layout.activity_main);
         listTasks = findViewById(R.id.list_tasks);
         lblNoTasks = findViewById(R.id.lbl_no_task);
+        findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
+    }
+
+    private void initRecyclerView() {
+        adapter = new TasksAdapter(mTasks, this);
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
-        this.configureViewModel();
-        findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
     }
 
     @Override

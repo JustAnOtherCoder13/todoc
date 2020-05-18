@@ -24,15 +24,6 @@ public class Project {
         this.color = color;
     }
 
-    @Nullable
-    static Project getProjectById(long id) {
-        for (Project project : allProjects) {
-            if (project.id == id)
-                return project;
-        }
-        return null;
-    }
-
     public long getId() {
         return id;
     }

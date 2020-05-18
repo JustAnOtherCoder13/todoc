@@ -40,10 +40,6 @@ public class Task {
         this.projectId = projectId;
     }
     public long getProjectId() { return projectId; }
-    @Nullable
-    public Project getProject() {
-        return Project.getProjectById(projectId);
-    }
     @NonNull
     public String getName() {
         return name;

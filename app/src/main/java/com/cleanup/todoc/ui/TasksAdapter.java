@@ -16,6 +16,8 @@ import com.cleanup.todoc.model.Task;
 
 import java.util.List;
 
+import static com.cleanup.todoc.ui.MainActivity.allProjects;
+
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder> {
 
     @NonNull
@@ -62,11 +64,18 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         private final AppCompatImageView imgDelete;
         private final DeleteTaskListener deleteTaskListener;
 
+        private Project getProject(long projectId){
+            for (Project project : allProjects){
+                if (project.getId() == projectId)return project;
+            }
+        return null;
+        }
+
+
         TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener) {
             super(itemView);
 
             this.deleteTaskListener = deleteTaskListener;
-
             imgProject = itemView.findViewById(R.id.img_project);
             lblTaskName = itemView.findViewById(R.id.lbl_task_name);
             lblProjectName = itemView.findViewById(R.id.lbl_project_name);
@@ -85,7 +94,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             imgDelete.setTag(task);
 
 
-            final Project taskProject = task.getProject();
+            final Project taskProject = getProject(task.getProjectId());
             if (taskProject != null) {
                 imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
                 lblProjectName.setText(taskProject.getName());

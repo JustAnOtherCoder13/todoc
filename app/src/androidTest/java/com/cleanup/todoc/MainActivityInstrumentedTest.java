@@ -4,11 +4,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.cleanup.todoc.ui.MainActivity;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,9 +34,18 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
-    //TODO have i to change something here?
+
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+
+    @BeforeClass
+    public static void beforeClass() {
+        ApplicationProvider.getApplicationContext().deleteDatabase("TaskDatabase.db");
+    }
+    @AfterClass
+    public static void afterClass(){
+        ApplicationProvider.getApplicationContext().deleteDatabase("TaskDatabase.db");
+    }
 
     @Test
     public void addAndRemoveTask() {

@@ -26,15 +26,13 @@ import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    //TODO is it right way to do?
-    public static List<Project> allProjects = Collections.emptyList();
+    public static List<Project> allProjects;
     private ArrayList<Task> mTasks = new ArrayList<>();
     private  TasksAdapter adapter;
     @NonNull
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @SuppressWarnings("NullableProblems")
     @NonNull
     private TextView lblNoTasks;
-    private TaskViewModel taskViewModel;
+    private GlobalViewModel globalViewModel;
     private int tasksSize;
 
     @Override
@@ -99,21 +97,21 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(Task task) {
-        taskViewModel.deleteTask(task);
+        globalViewModel.deleteTask(task);
         updateTasks();
     }
 
     private void configureViewModel(){
-        ViewModelFactory viewModelFactory = DI.provideModelFactory(this.getApplication());
-        this.taskViewModel = new ViewModelProvider(this,viewModelFactory).get(TaskViewModel.class);
-        this.taskViewModel.getAllTasks().observe(this, tasks -> {
+        ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
+        this.globalViewModel = new ViewModelProvider(this,viewModelFactory).get(GlobalViewModel.class);
+        this.globalViewModel.getAllTasks().observe(this, tasks -> {
             adapter.updateTasks(tasks);
-            mTasks =(ArrayList<Task>) taskViewModel.getAllTasks().getValue();
+            mTasks =(ArrayList<Task>) globalViewModel.getAllTasks().getValue();
             tasksSize = tasks.size();
             assert mTasks != null;
             updateTasks();
         });
-        this.taskViewModel.getAllProjects().observe(this, projects -> allProjects = taskViewModel.getAllProjects().getValue());
+        this.globalViewModel.getAllProjects().observe(this, projects -> allProjects = globalViewModel.getAllProjects().getValue());
     }
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
@@ -154,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void addTask(@NonNull Task task) {
-        taskViewModel.createTask(task);
+        globalViewModel.createTask(task);
         updateTasks();
     }
 

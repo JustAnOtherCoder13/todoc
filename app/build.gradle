@@ -10,6 +10,23 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    defaultConfig {
+        minSdkVersion 14
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [notClass: [
+                'net.bytebuddy.agent.builder.ResettableClassFileTransformer',
+                'net.bytebuddy.dynamic.loading.NoOpClassFileTransformer',
+                'net.bytebuddy.jar.asm.commons.JSRInlinerAdapter',
+                'net.bytebuddy.jar.asm.commons.TryCatchBlockSorter',
+        ].join(',')]
+    }
+   /* configurations.all {
+        resolutionStrategy {
+            force 'net.bytebuddy:byte-buddy:1.8.10'
+            force 'net.bytebuddy:byte-buddy-agent:1.8.10'
+            force 'net.bytebuddy:byte-buddy-android:1.8.10'
+        }
+    }*/
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -48,5 +65,10 @@ dependencies {
     releaseImplementation 'com.idescout.sql:sqlscout-server-noop:4.1'
     // TESTING
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
+    //Mockito
+    def mockito_version = '2.22.0'
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '2.22.0'
 
 }

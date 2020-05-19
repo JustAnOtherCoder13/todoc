@@ -13,6 +13,6 @@ class ProjectStaticList {
     new Project(2L,"Projet Lucidia",0xFFB4CDBA),
     new Project(3L,"Projet Circus",0xFFA3CED2)
     );
-    static List<Project> generateProjects(){return new ArrayList<>(PROJECTS);
+    public static List<Project> generateProjects(){return new ArrayList<>(PROJECTS);
     }
 }

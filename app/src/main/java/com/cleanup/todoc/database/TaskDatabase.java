@@ -14,6 +14,8 @@ import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import static com.cleanup.todoc.database.Generator.generateProjects;
+
 @androidx.room.Database(entities = {Task.class, Project.class}, version = 1, exportSchema = false)
 public abstract class TaskDatabase extends RoomDatabase {
 
@@ -42,18 +44,18 @@ public abstract class TaskDatabase extends RoomDatabase {
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
 
-                createProject(1L, "Projet Tartampion", 0xFFEADAD1, db);
-                createProject(2L, "Projet Lucidia", 0xFFB4CDBA, db);
-                createProject(3L, "Projet Circus", 0xFFA3CED2, db);
+                createProject(0, db);
+                createProject(1, db);
+                createProject(2, db);
             }
         };
     }
 
-    private static void createProject(long id, String name, int color, SupportSQLiteDatabase db) {
+    private static void createProject(int index, SupportSQLiteDatabase db) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("id", id);
-        contentValues.put("name", name);
-        contentValues.put("color", color);
+        contentValues.put("id", generateProjects().get(index).getId());
+        contentValues.put("name", generateProjects().get(index).getName());
+        contentValues.put("color", generateProjects().get(index).getColor());
         db.insert("project_table", OnConflictStrategy.IGNORE, contentValues);
     }
 }

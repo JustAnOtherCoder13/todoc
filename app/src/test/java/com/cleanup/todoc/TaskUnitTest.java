@@ -11,11 +11,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static com.cleanup.todoc.ProjectStaticList.generateProjects;
-import static com.cleanup.todoc.ui.MainActivity.allProjects;
+import static com.cleanup.todoc.database.Generator.generateProjects;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 public class TaskUnitTest {

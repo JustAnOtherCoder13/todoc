@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
+        this.initView();
         this.configureViewModel();
         this.initRecyclerView();
     }
@@ -71,6 +71,19 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         adapter = new TasksAdapter(mTasks, this);
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
+    }
+
+    private void configureViewModel(){
+        ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
+        this.globalViewModel = new ViewModelProvider(this,viewModelFactory).get(GlobalViewModel.class);
+        this.globalViewModel.getAllTasks().observe(this, tasks -> {
+            adapter.updateTasks(tasks);
+            mTasks =(ArrayList<Task>) globalViewModel.getAllTasks().getValue();
+            tasksSize = tasks.size();
+            assert mTasks != null;
+            updateTasks();
+        });
+        this.globalViewModel.getAllProjects().observe(this, projects -> allProjects = globalViewModel.getAllProjects().getValue());
     }
 
     @Override
@@ -101,18 +114,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         updateTasks();
     }
 
-    private void configureViewModel(){
-        ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
-        this.globalViewModel = new ViewModelProvider(this,viewModelFactory).get(GlobalViewModel.class);
-        this.globalViewModel.getAllTasks().observe(this, tasks -> {
-            adapter.updateTasks(tasks);
-            mTasks =(ArrayList<Task>) globalViewModel.getAllTasks().getValue();
-            tasksSize = tasks.size();
-            assert mTasks != null;
-            updateTasks();
-        });
-        this.globalViewModel.getAllProjects().observe(this, projects -> allProjects = globalViewModel.getAllProjects().getValue());
-    }
+
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
 

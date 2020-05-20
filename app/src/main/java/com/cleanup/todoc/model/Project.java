@@ -2,11 +2,8 @@ package com.cleanup.todoc.model;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import static com.cleanup.todoc.ui.MainActivity.allProjects;
 
 @Entity(tableName = "project_table")
 public class Project {

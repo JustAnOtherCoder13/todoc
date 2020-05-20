@@ -1,6 +1,5 @@
 package com.cleanup.todoc.di;
 
-import android.app.Application;
 import android.content.Context;
 
 import java.util.concurrent.Executor;

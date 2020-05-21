@@ -9,7 +9,6 @@ import androidx.test.core.app.ApplicationProvider;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.ui.GlobalViewModel;
-import com.cleanup.todoc.utils.LiveDataTestUtil;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,6 +20,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -29,10 +29,6 @@ import static com.cleanup.todoc.database.Generator.generateTasks;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
@@ -50,6 +46,7 @@ public class ViewModelTest {
 
     private GlobalViewModel globalViewModel;
     private final Task TASK = generateTasks().get(0);
+    private List<Task> taskList;
 
     @BeforeClass
     public static void beforeClass() {
@@ -68,12 +65,17 @@ public class ViewModelTest {
         Executor executor = Executors.newSingleThreadExecutor();
         globalViewModel = new GlobalViewModel(context,executor);
         //init observers on tasks and projects
-        globalViewModel.getAllTasks().observeForever(taskObserver);
+        globalViewModel.getAllTasks().observeForever(this::updateTask);
         globalViewModel.getAllProjects().observeForever(projectObserver);
-    }
 
+
+    }
+private void updateTask(List<Task> tasks){
+        this.taskList = tasks;
+}
     @Test
     public void projectsAndTasksShouldExistAndHaveObservers(){
+        globalViewModel.getAllTasks().observeForever(taskObserver);
         //ensure live data exist
         assertNotNull (globalViewModel.getAllProjects());
         assertNotNull (globalViewModel.getAllTasks());
@@ -85,13 +87,18 @@ public class ViewModelTest {
     }
     @Test
     public void testDb() throws InterruptedException {
-        globalViewModel.getAllTasks().observeForever(taskObserver);
         globalViewModel.createTask(TASK);
-        List<Task> tasks = LiveDataTestUtil.getValue(globalViewModel.getAllTasks());
-        verify(globalViewModel).createTask(TASK);
-        //assertEquals(1,globalViewModel.getAllTasks().getValue().size());
+        final int size = taskList.size();
+        //globalViewModel.getAllTasks().observeForever(taskObserver);
+        //verify(taskObserver).onChanged(taskList);
+        do{
+            globalViewModel.getAllTasks().getValue();
+        }while (taskList.size() == size);
+
+        assertEquals(1,globalViewModel.getAllTasks().getValue().size());
 
     }
+
 
 
 

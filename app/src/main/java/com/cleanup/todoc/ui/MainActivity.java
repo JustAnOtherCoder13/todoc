@@ -78,9 +78,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.globalViewModel = new ViewModelProvider(this,viewModelFactory).get(GlobalViewModel.class);
         this.globalViewModel.getAllTasks().observe(this, tasks -> {
             adapter.updateTasks(tasks);
-            mTasks =(ArrayList<Task>) globalViewModel.getAllTasks().getValue();
+            mTasks =(ArrayList<Task>) tasks;
             tasksSize = tasks.size();
-            assert mTasks != null;
             updateTasks();
         });
         this.globalViewModel.getAllProjects().observe(this, projects -> allProjects = globalViewModel.getAllProjects().getValue());

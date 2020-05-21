@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.repository.TaskRepository;
 import com.cleanup.todoc.ui.GlobalViewModel;
 
 import org.junit.AfterClass;
@@ -29,6 +30,9 @@ import static com.cleanup.todoc.database.Generator.generateTasks;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
@@ -85,18 +89,15 @@ private void updateTask(List<Task> tasks){
         assertTrue(globalViewModel.getAllProjects().hasObservers());
         assertEquals(3, globalViewModel.getAllProjects().getValue().size());
     }
+
     @Test
     public void testDb() throws InterruptedException {
-        globalViewModel.createTask(TASK);
-        final int size = taskList.size();
-        //globalViewModel.getAllTasks().observeForever(taskObserver);
-        //verify(taskObserver).onChanged(taskList);
-        do{
-            globalViewModel.getAllTasks().getValue();
-        }while (taskList.size() == size);
+        TaskRepository mockedTaskRepo = mock(TaskRepository.class);
+        globalViewModel.setTaskDataSource(mockedTaskRepo);
+        globalViewModel.createTask();
+        verify(mockedTaskRepo, times(1)).createTask(any());
 
-        assertEquals(1,globalViewModel.getAllTasks().getValue().size());
-
+        //assertEquals(1,globalViewModel.getAllTasks().getValue().size());
     }
 
 

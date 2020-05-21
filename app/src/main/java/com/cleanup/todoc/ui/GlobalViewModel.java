@@ -17,7 +17,7 @@ import java.util.concurrent.Executor;
 public class GlobalViewModel extends ViewModel {
 
     private final ProjectRepository projectDataSource;
-    private final TaskRepository taskDataSource;
+    private TaskRepository taskDataSource;
     private LiveData<List<Task>> allTasks;
     private LiveData<List<Project>> allProjects;
     private final Executor executor;
@@ -46,4 +46,16 @@ public class GlobalViewModel extends ViewModel {
         return allProjects;
     }
 
+    public TaskRepository getTaskDataSource() {
+        return taskDataSource;
+    }
+
+    public void setTaskDataSource(TaskRepository taskDataSource) {
+        this.taskDataSource = taskDataSource;
+    }
+
+    public void createTask() {
+        Task task = new Task(1L,"Laver le linge",360);
+        executor.execute(() -> taskDataSource.createTask(task));
+    }
 }

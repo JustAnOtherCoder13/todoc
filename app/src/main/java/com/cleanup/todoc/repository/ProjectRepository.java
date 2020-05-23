@@ -12,13 +12,13 @@ import java.util.List;
 
 public class ProjectRepository {
 
-    private final ProjectDao projectDao;
     private LiveData<List<Project>> allProjects;
 
-    public ProjectRepository(Context context){
+    public ProjectRepository(Context context) {
         TaskDatabase taskDatabase = TaskDatabase.getInstance(context);
-        projectDao = taskDatabase.projectDao();
+        ProjectDao projectDao = taskDatabase.projectDao();
         allProjects = projectDao.getAllProjects();
     }
-    public LiveData<List<Project>> getAllProjects(){return allProjects;}
+
+    public LiveData<List<Project>> getAllProjects() { return allProjects; }
 }

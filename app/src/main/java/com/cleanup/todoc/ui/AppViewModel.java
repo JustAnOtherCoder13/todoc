@@ -11,13 +11,11 @@ import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.repository.ProjectRepository;
 import com.cleanup.todoc.repository.TaskRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
 public class AppViewModel extends ViewModel {
 
-    private final ProjectRepository projectDataSource;
     private final TaskRepository taskDataSource;
     private LiveData<List<Task>> allTasks;
     private LiveData<List<Project>> allProjects;
@@ -25,7 +23,7 @@ public class AppViewModel extends ViewModel {
 
     public AppViewModel(@NonNull Context context, Executor executor) {
         taskDataSource = new TaskRepository(context);
-        projectDataSource = new ProjectRepository(context);
+        ProjectRepository projectDataSource = new ProjectRepository(context);
         allTasks = taskDataSource.getAllTasks();
         allProjects = projectDataSource.getAllProjects();
         this.executor = executor;

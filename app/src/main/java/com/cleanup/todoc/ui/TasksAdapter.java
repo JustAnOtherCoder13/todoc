@@ -25,25 +25,25 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     @NonNull
     private final DeleteTaskListener deleteTaskListener;
 
-    TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener,@NonNull List<Project> allProjects) {
+    TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
-        this.allProjects = allProjects;
-    }
+}
 
     void updateTasks(@NonNull final List<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();
     }
 
-    void getAllProject(@NonNull final List<Project> projects){
+    void getAllProjects(@NonNull final List<Project> projects) {
         this.allProjects = projects;
     }
+
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_task, viewGroup, false);
-        return new TaskViewHolder(view, deleteTaskListener,allProjects);
+        return new TaskViewHolder(view, deleteTaskListener, allProjects);
     }
 
     @Override
@@ -69,15 +69,15 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         private final DeleteTaskListener deleteTaskListener;
         private List<Project> allProjects;
 
-        private Project getProject(long projectId){
-            for (Project project : allProjects){
-                if (project.getId() == projectId)return project;
+        private Project getProject(long projectId) {
+            for (Project project : allProjects) {
+                if (project.getId() == projectId) return project;
             }
-        return null;
+            return null;
         }
 
 
-        TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener,List<Project> allProjects) {
+        TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener, List<Project> allProjects) {
             super(itemView);
 
             this.deleteTaskListener = deleteTaskListener;

@@ -17,7 +17,7 @@ public class Task {
 
     @ColumnInfo(index = true)
     private long projectId;
-    // Suppress warning because setName is called in constructor
+
     @SuppressWarnings("NullableProblems")
     @NonNull
     private String name;
@@ -46,12 +46,10 @@ public class Task {
     private void setName(@NonNull String name) {
         this.name = name;
     }
-    private void setCreationTimestamp(long creationTimestamp) {
-        this.creationTimestamp = creationTimestamp;
-    }
+    private void setCreationTimestamp(long creationTimestamp) { this.creationTimestamp = creationTimestamp; }
     public long getCreationTimestamp() { return creationTimestamp; }
 
-    // Sort Tasks
+    // Sort Tasks inner classes
 
     public static class TaskAZComparator implements Comparator<Task> {
         @Override

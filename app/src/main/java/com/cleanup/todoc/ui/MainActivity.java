@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private TextView lblNoTasks;
     private AppViewModel appViewModel;
-    private int tasksSize;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void initRecyclerView() {
-        adapter = new TasksAdapter(mTasks, this,allProjects);
+        adapter = new TasksAdapter(mTasks, this);
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
     }
@@ -79,12 +78,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.appViewModel.getAllTasks().observe(this, tasks -> {
             adapter.updateTasks(tasks);
             mTasks =(ArrayList<Task>) tasks;
-            tasksSize = tasks.size();
             updateTasks();
         });
         this.appViewModel.getAllProjects().observe(this, projects ->{
             allProjects = projects;
-            adapter.getAllProject(projects);
+            adapter.getAllProjects(projects);
         });
     }
 
@@ -115,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         appViewModel.deleteTask(task);
         updateTasks();
     }
-
-
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
 
@@ -161,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void updateTasks() {
-        if (tasksSize == 0) {
+        if (mTasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
         } else {
@@ -216,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             dialogSpinner.setAdapter(adapter);
         }
     }
-
 
     private enum SortMethod {
         ALPHABETICAL,

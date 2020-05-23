@@ -33,10 +33,11 @@ public class TaskDaoTest {
     private static long PROJECT_ID = 1L;
     private static long CREATION_TIMESTAMP = 6000;
     private static String NAME = "Laver";
-    private static Task TASK_DEMO = new Task(PROJECT_ID,NAME,CREATION_TIMESTAMP);
+    private static Task TASK_DEMO = new Task(PROJECT_ID, NAME, CREATION_TIMESTAMP);
     private static String PROJECT_NAME = "Projet Tartampion";
     private static int PROJECT_COLOR = 0xFFEADAD1;
-    private static Project PROJECT_DEMO = new Project(PROJECT_ID,PROJECT_NAME,PROJECT_COLOR);
+    private static Project PROJECT_DEMO = new Project(PROJECT_ID, PROJECT_NAME, PROJECT_COLOR);
+
     //to create project demo and task demo in database
     private void createTaskAndProjectInDb() {
         this.database.projectDao().insertProject(PROJECT_DEMO);
@@ -46,28 +47,30 @@ public class TaskDaoTest {
     @Before
     public void initDb() {
         Context context = ApplicationProvider.getApplicationContext();
-        this.database = Room.inMemoryDatabaseBuilder(context,TaskDatabase.class)
+        this.database = Room.inMemoryDatabaseBuilder(context, TaskDatabase.class)
                 .allowMainThreadQueries()
                 .build();
     }
 
     @After
-    public void  closeDb(){
+    public void closeDb() {
         database.close();
     }
 
-   @Test
+    @Test
     public void getTasksWhenNoTaskInserted() throws InterruptedException {
         //Assert that tasks list is empty in the database
         List<Task> tasks = LiveDataTestUtil.getValue(this.database.taskDao().getAllTasks());
         assertTrue(tasks.isEmpty());
     }
+
     @Test
     public void getProjectsWhenNoProjectInserted() throws InterruptedException {
         //Assert that projects list is empty in the database
         List<Project> projects = LiveDataTestUtil.getValue(this.database.projectDao().getAllProjects());
         assertTrue(projects.isEmpty());
     }
+
     @Test
     public void createAndGetProject() throws InterruptedException {
         //Create project and task
@@ -78,8 +81,9 @@ public class TaskDaoTest {
         //Assert project added match to static values
         assertTrue(projectAdded.getId() == PROJECT_ID
                 && projectAdded.getName().equals(PROJECT_NAME)
-                            && projectAdded.getColor() == PROJECT_COLOR);
+                && projectAdded.getColor() == PROJECT_COLOR);
     }
+
     @Test
     public void createAndGetTask() throws InterruptedException {
         //Create project and task
@@ -89,8 +93,9 @@ public class TaskDaoTest {
         Task taskAdded = tasks.get(0);
         //Assert task added match to static values
         assertTrue(taskAdded.getProjectId() == PROJECT_ID && taskAdded.getName().equals(NAME)
-                            && taskAdded.getCreationTimestamp() == CREATION_TIMESTAMP);
+                && taskAdded.getCreationTimestamp() == CREATION_TIMESTAMP);
     }
+
     @Test
     public void createAndDeleteTask() throws InterruptedException {
         //Create project and task

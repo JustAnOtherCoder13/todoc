@@ -22,14 +22,15 @@ public abstract class TaskDatabase extends RoomDatabase {
     private static volatile TaskDatabase INSTANCE;
 
     public abstract TaskDao taskDao();
+
     public abstract ProjectDao projectDao();
 
-    public static TaskDatabase getInstance(Context context){
-        if (INSTANCE==null){
-            synchronized (TaskDatabase.class){
-                if (INSTANCE==null){
+    public static TaskDatabase getInstance(Context context) {
+        if (INSTANCE == null) {
+            synchronized (TaskDatabase.class) {
+                if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            TaskDatabase.class,"TaskDatabase.db")
+                            TaskDatabase.class, "TaskDatabase.db")
                             .addCallback(prepopulateDatabase())
                             .build();
                 }
@@ -38,7 +39,7 @@ public abstract class TaskDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static Callback prepopulateDatabase(){
+    private static Callback prepopulateDatabase() {
         return new Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {

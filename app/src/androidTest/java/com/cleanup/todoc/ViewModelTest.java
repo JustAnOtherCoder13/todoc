@@ -9,7 +9,6 @@ import androidx.test.core.app.ApplicationProvider;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.ui.AppViewModel;
-import com.cleanup.todoc.utils.CurrentThreadExecutor;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,7 +29,6 @@ import static com.cleanup.todoc.database.Generator.generateTasks;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -110,5 +108,11 @@ public class ViewModelTest {
         appViewModel.createTask(generateTasks().get(2));
         //Ensure list size is now three
         assertEquals(3, appViewModel.getAllTasks().getValue().size());
+    }
+}
+
+class CurrentThreadExecutor implements Executor {
+    public void execute(Runnable r) {
+        r.run();
     }
 }

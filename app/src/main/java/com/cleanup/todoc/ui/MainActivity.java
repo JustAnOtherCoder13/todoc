@@ -82,7 +82,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             tasksSize = tasks.size();
             updateTasks();
         });
-        this.appViewModel.getAllProjects().observe(this, projects -> allProjects = appViewModel.getAllProjects().getValue());
+        this.appViewModel.getAllProjects().observe(this, projects ->{
+            allProjects = projects;
+            adapter.getAllProject(projects);
+        });
     }
 
     @Override
@@ -154,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     private void addTask(@NonNull Task task) {
         appViewModel.createTask(task);
-        appViewModel.getProject(task.getProjectId());
         updateTasks();
     }
 

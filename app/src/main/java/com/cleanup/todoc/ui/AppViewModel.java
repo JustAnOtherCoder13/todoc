@@ -35,20 +35,15 @@ public class AppViewModel extends ViewModel {
         return allTasks;
     }
 
-    public void createTask(Task task) { executor.execute(() -> taskDataSource.createTask(task));}
+    public void createTask(Task task) {
+        executor.execute(() -> taskDataSource.createTask(task));
+    }
 
-    public void deleteTask(Task task) { executor.execute(() -> taskDataSource.deleteTask(task));}
+    public void deleteTask(Task task) {
+        executor.execute(() -> taskDataSource.deleteTask(task));
+    }
 
     public LiveData<List<Project>> getAllProjects() {
         return allProjects;
     }
-
-    Project getProject(long projectId) {
-        for (Project project : allProjects.getValue()) {
-            if (project.getId() == projectId) return project;
-        }
-        return null;
-    }
-
-
 }

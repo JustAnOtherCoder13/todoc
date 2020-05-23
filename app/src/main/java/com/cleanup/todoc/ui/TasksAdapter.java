@@ -36,6 +36,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         notifyDataSetChanged();
     }
 
+    void getAllProject(@NonNull final List<Project> projects){
+        this.allProjects = projects;
+    }
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {

@@ -16,18 +16,19 @@ import com.cleanup.todoc.model.Task;
 
 import java.util.List;
 
-import static com.cleanup.todoc.ui.MainActivity.allProjects;
-
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder> {
 
     @NonNull
     private List<Task> tasks;
     @NonNull
+    private List<Project> allProjects;
+    @NonNull
     private final DeleteTaskListener deleteTaskListener;
 
-    TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
+    TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener,@NonNull List<Project> allProjects) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
+        this.allProjects = allProjects;
     }
 
     void updateTasks(@NonNull final List<Task> tasks) {
@@ -39,7 +40,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_task, viewGroup, false);
-        return new TaskViewHolder(view, deleteTaskListener);
+        return new TaskViewHolder(view, deleteTaskListener,allProjects);
     }
 
     @Override
@@ -63,6 +64,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         private final TextView lblProjectName;
         private final AppCompatImageView imgDelete;
         private final DeleteTaskListener deleteTaskListener;
+        private List<Project> allProjects;
 
         private Project getProject(long projectId){
             for (Project project : allProjects){
@@ -72,10 +74,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         }
 
 
-        TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener) {
+        TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener,List<Project> allProjects) {
             super(itemView);
 
             this.deleteTaskListener = deleteTaskListener;
+            this.allProjects = allProjects;
             imgProject = itemView.findViewById(R.id.img_project);
             lblTaskName = itemView.findViewById(R.id.lbl_task_name);
             lblProjectName = itemView.findViewById(R.id.lbl_project_name);

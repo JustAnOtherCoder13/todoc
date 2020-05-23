@@ -32,7 +32,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    public static List<Project> allProjects;
+    private List<Project> allProjects;
     private ArrayList<Task> mTasks = new ArrayList<>();
     private  TasksAdapter adapter;
     @NonNull
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @SuppressWarnings("NullableProblems")
     @NonNull
     private TextView lblNoTasks;
-    private GlobalViewModel globalViewModel;
+    private AppViewModel appViewModel;
     private int tasksSize;
 
     @Override
@@ -68,21 +68,21 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void initRecyclerView() {
-        adapter = new TasksAdapter(mTasks, this);
+        adapter = new TasksAdapter(mTasks, this,allProjects);
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
     }
 
     private void configureViewModel(){
         ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
-        this.globalViewModel = new ViewModelProvider(this,viewModelFactory).get(GlobalViewModel.class);
-        this.globalViewModel.getAllTasks().observe(this, tasks -> {
+        this.appViewModel = new ViewModelProvider(this,viewModelFactory).get(AppViewModel.class);
+        this.appViewModel.getAllTasks().observe(this, tasks -> {
             adapter.updateTasks(tasks);
             mTasks =(ArrayList<Task>) tasks;
             tasksSize = tasks.size();
             updateTasks();
         });
-        this.globalViewModel.getAllProjects().observe(this, projects -> allProjects = globalViewModel.getAllProjects().getValue());
+        this.appViewModel.getAllProjects().observe(this, projects -> allProjects = appViewModel.getAllProjects().getValue());
     }
 
     @Override
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(Task task) {
-        globalViewModel.deleteTask(task);
+        appViewModel.deleteTask(task);
         updateTasks();
     }
 
@@ -153,7 +153,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void addTask(@NonNull Task task) {
-        globalViewModel.createTask(task);
+        appViewModel.createTask(task);
+        appViewModel.getProject(task.getProjectId());
         updateTasks();
     }
 
@@ -213,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             dialogSpinner.setAdapter(adapter);
         }
     }
+
 
     private enum SortMethod {
         ALPHABETICAL,

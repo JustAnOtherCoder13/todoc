@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.cleanup.todoc.ui.GlobalViewModel;
+import com.cleanup.todoc.ui.AppViewModel;
 
 import java.util.concurrent.Executor;
 
@@ -24,8 +24,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(GlobalViewModel.class)) {
-            return (T) new GlobalViewModel(context,executor);
+        if (modelClass.isAssignableFrom(AppViewModel.class)) {
+            return (T) new AppViewModel(context,executor);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

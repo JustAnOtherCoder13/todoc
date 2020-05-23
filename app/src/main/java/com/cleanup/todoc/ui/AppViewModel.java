@@ -11,10 +11,11 @@ import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.repository.ProjectRepository;
 import com.cleanup.todoc.repository.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class GlobalViewModel extends ViewModel {
+public class AppViewModel extends ViewModel {
 
     private final ProjectRepository projectDataSource;
     private final TaskRepository taskDataSource;
@@ -22,7 +23,7 @@ public class GlobalViewModel extends ViewModel {
     private LiveData<List<Project>> allProjects;
     private final Executor executor;
 
-    public GlobalViewModel(@NonNull Context context, Executor executor) {
+    public AppViewModel(@NonNull Context context, Executor executor) {
         taskDataSource = new TaskRepository(context);
         projectDataSource = new ProjectRepository(context);
         allTasks = taskDataSource.getAllTasks();
@@ -34,16 +35,20 @@ public class GlobalViewModel extends ViewModel {
         return allTasks;
     }
 
-    public void createTask(Task task) {
-        executor.execute(() -> taskDataSource.createTask(task));
-    }
+    public void createTask(Task task) { executor.execute(() -> taskDataSource.createTask(task));}
 
-    public void deleteTask(Task task) {
-        executor.execute(() -> taskDataSource.deleteTask(task));
-    }
+    public void deleteTask(Task task) { executor.execute(() -> taskDataSource.deleteTask(task));}
 
     public LiveData<List<Project>> getAllProjects() {
         return allProjects;
     }
+
+    Project getProject(long projectId) {
+        for (Project project : allProjects.getValue()) {
+            if (project.getId() == projectId) return project;
+        }
+        return null;
+    }
+
 
 }

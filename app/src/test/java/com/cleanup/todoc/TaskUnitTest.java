@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.cleanup.todoc.database.Generator.generateProjects;
+import static com.cleanup.todoc.database.Generator.generateTasks;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -30,9 +31,9 @@ public class TaskUnitTest {
     }
     @Test
     public void test_projects() {
-        final Task task1 = new Task( 1, "task 1", new Date().getTime());
-        final Task task2 = new Task( 2, "task 2", new Date().getTime());
-        final Task task3 = new Task( 3, "task 3", new Date().getTime());
+        final Task task1 = generateTasks().get(0);
+        final Task task2 = generateTasks().get(1);
+        final Task task3 = generateTasks().get(2);
         final Task task4 = new Task( 4, "task 4", new Date().getTime());
 
         assertEquals(projectId1, task1.getProjectId());

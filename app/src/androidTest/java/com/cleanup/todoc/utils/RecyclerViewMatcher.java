@@ -15,7 +15,7 @@ import java.util.Objects;
 public class RecyclerViewMatcher {
     private final int recyclerViewId;
 
-    RecyclerViewMatcher(int recyclerViewId) {
+    public RecyclerViewMatcher(int recyclerViewId) {
         this.recyclerViewId = recyclerViewId;
     }
 

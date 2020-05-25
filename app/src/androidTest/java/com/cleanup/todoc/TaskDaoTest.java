@@ -20,6 +20,8 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import static com.cleanup.todoc.database.Generator.generateProjects;
+import static com.cleanup.todoc.database.Generator.generateTasks;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -30,18 +32,17 @@ public class TaskDaoTest {
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
-    private static long PROJECT_ID = 1L;
-    private static long CREATION_TIMESTAMP = 6000;
-    private static String NAME = "Laver";
-    private static Task TASK_DEMO = new Task(PROJECT_ID, NAME, CREATION_TIMESTAMP);
-    private static String PROJECT_NAME = "Projet Tartampion";
-    private static int PROJECT_COLOR = 0xFFEADAD1;
-    private static Project PROJECT_DEMO = new Project(PROJECT_ID, PROJECT_NAME, PROJECT_COLOR);
+    private static long TASK_PROJECT_ID = generateTasks().get(0).getProjectId();
+    private static long CREATION_TIMESTAMP = generateTasks().get(0).getCreationTimestamp();
+    private static String NAME = generateTasks().get(0).getName();
+    private static String PROJECT_NAME = generateProjects().get(0).getName();
+    private static int PROJECT_COLOR = generateProjects().get(0).getColor();
+    private static long PROJECT_ID = generateProjects().get(0).getId();
 
     //to create project demo and task demo in database
     private void createTaskAndProjectInDb() {
-        this.database.projectDao().insertProject(PROJECT_DEMO);
-        this.database.taskDao().insertTask(TASK_DEMO);
+        this.database.projectDao().insertProject(generateProjects().get(0));
+        this.database.taskDao().insertTask(generateTasks().get(0));
     }
 
     @Before
@@ -79,7 +80,7 @@ public class TaskDaoTest {
         //Get the first project in project's list
         Project projectAdded = projects.get(0);
         //Assert project added match to static values
-        assertTrue(projectAdded.getId() == PROJECT_ID
+        assertTrue(projectAdded.getId() == TASK_PROJECT_ID
                 && projectAdded.getName().equals(PROJECT_NAME)
                 && projectAdded.getColor() == PROJECT_COLOR);
     }

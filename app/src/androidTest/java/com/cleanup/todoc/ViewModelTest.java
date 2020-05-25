@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(JUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
+//@RunWith(JUnit4.class)
 public class ViewModelTest {
 
     @Rule
@@ -69,7 +71,7 @@ public class ViewModelTest {
         Executor executor = Executors.newSingleThreadExecutor();
         globalViewModel = new GlobalViewModel(context,executor);
         //init observers on tasks and projects
-        globalViewModel.getAllTasks().observeForever(this::updateTask);
+        globalViewModel.getAllTasks().observeForever(taskObserver);
         globalViewModel.getAllProjects().observeForever(projectObserver);
 
 
@@ -92,12 +94,14 @@ private void updateTask(List<Task> tasks){
 
     @Test
     public void testDb() throws InterruptedException {
-        TaskRepository mockedTaskRepo = mock(TaskRepository.class);
-        globalViewModel.setTaskDataSource(mockedTaskRepo);
-        globalViewModel.createTask();
-        verify(mockedTaskRepo, times(1)).createTask(any());
-
-        //assertEquals(1,globalViewModel.getAllTasks().getValue().size());
+        globalViewModel.getAllTasks().observeForever(taskObserver);
+        globalViewModel.createTask(TASK);
+        ArrayList<Task> tasks = new ArrayList<>();
+        tasks.add(TASK);
+        taskObserver.onChanged(tasks);
+        assert(globalViewModel.getAllTasks().hasActiveObservers());
+        verify(taskObserver).onChanged(tasks);
+        assertEquals(globalViewModel.getAllTasks().getValue().size(), tasks.size());
     }
 
 

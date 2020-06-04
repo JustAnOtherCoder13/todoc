@@ -21,7 +21,9 @@ public class Project {
         this.color = color;
     }
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
     @NonNull
     public String getName() {

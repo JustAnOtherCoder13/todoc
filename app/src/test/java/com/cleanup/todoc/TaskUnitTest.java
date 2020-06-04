@@ -1,53 +1,23 @@
 package com.cleanup.todoc;
 
-import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
-import static com.cleanup.todoc.database.Generator.generateProjects;
-import static com.cleanup.todoc.database.Generator.generateTasks;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
 public class TaskUnitTest {
-    private List<Project> projects;
-    private long projectId1;
-    private long projectId2;
-    private long projectId3;
 
-    @Before
-    public void initDb(){projects = generateProjects();
-    projectId1 = projects.get(0).getId();
-    projectId2 = projects.get(1).getId();
-    projectId3 = projects.get(2).getId();
-    }
-    @Test
-    public void test_projects() {
-        final Task task1 = generateTasks().get(0);
-        final Task task2 = generateTasks().get(1);
-        final Task task3 = generateTasks().get(2);
-        final Task task4 = new Task( 4, "task 4", new Date().getTime());
 
-        assertEquals(projectId1, task1.getProjectId());
-        assertEquals(projectId2, task2.getProjectId());
-        assertEquals(projectId3, task3.getProjectId());
-        assertFalse(task4.getProjectId()==projectId3||task4.getProjectId()==projectId2||
-                            task4.getProjectId()==projectId1);
-    }
 
     @Test
     public void test_az_comparator() {
-        final Task task1 = new Task( 1, "aaa", 123);
-        final Task task2 = new Task( 2, "zzz", 124);
-        final Task task3 = new Task( 3, "hhh", 125);
+        final Task task1 = new Task(1, "aaa", 123);
+        final Task task2 = new Task(2, "zzz", 124);
+        final Task task3 = new Task(3, "hhh", 125);
 
         final ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
@@ -62,9 +32,9 @@ public class TaskUnitTest {
 
     @Test
     public void test_za_comparator() {
-        final Task task1 = new Task( 1, "aaa", 123);
-        final Task task2 = new Task( 2, "zzz", 124);
-        final Task task3 = new Task( 3, "hhh", 125);
+        final Task task1 = new Task(1, "aaa", 123);
+        final Task task2 = new Task(2, "zzz", 124);
+        final Task task3 = new Task(3, "hhh", 125);
 
         final ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);
@@ -79,9 +49,9 @@ public class TaskUnitTest {
 
     @Test
     public void test_recent_comparator() {
-        final Task task1 = new Task( 1, "aaa", 123);
-        final Task task2 = new Task( 2, "zzz", 124);
-        final Task task3 = new Task( 3, "hhh", 125);
+        final Task task1 = new Task(1, "aaa", 123);
+        final Task task2 = new Task(2, "zzz", 124);
+        final Task task3 = new Task(3, "hhh", 125);
 
         final ArrayList<Task> tasks = new ArrayList<>();
         tasks.add(task1);

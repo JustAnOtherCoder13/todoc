@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     private List<Project> allProjects;
     private ArrayList<Task> mTasks = new ArrayList<>();
-    private  TasksAdapter adapter;
+    private TasksAdapter adapter;
     @NonNull
     private SortMethod sortMethod = SortMethod.NONE;
     @Nullable
@@ -57,33 +57,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.initView();
         this.configureViewModel();
         this.initRecyclerView();
-    }
-
-    private void initView() {
-        setContentView(R.layout.activity_main);
-        listTasks = findViewById(R.id.list_tasks);
-        lblNoTasks = findViewById(R.id.lbl_no_task);
-        findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
-    }
-
-    private void initRecyclerView() {
-        adapter = new TasksAdapter(mTasks, this);
-        listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        listTasks.setAdapter(adapter);
-    }
-
-    private void configureViewModel(){
-        ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
-        this.appViewModel = new ViewModelProvider(this,viewModelFactory).get(AppViewModel.class);
-        this.appViewModel.getAllTasks().observe(this, tasks -> {
-            adapter.updateTasks(tasks);
-            mTasks =(ArrayList<Task>) tasks;
-            updateTasks();
-        });
-        this.appViewModel.getAllProjects().observe(this, projects ->{
-            allProjects = projects;
-            adapter.getAllProjects(projects);
-        });
     }
 
     @Override
@@ -114,6 +87,33 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         updateTasks();
     }
 
+    private void initView() {
+        setContentView(R.layout.activity_main);
+        listTasks = findViewById(R.id.list_tasks);
+        lblNoTasks = findViewById(R.id.lbl_no_task);
+        findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
+    }
+
+    private void initRecyclerView() {
+        adapter = new TasksAdapter(mTasks, this);
+        listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        listTasks.setAdapter(adapter);
+    }
+
+    private void configureViewModel() {
+        ViewModelFactory viewModelFactory = DI.provideModelFactory(this);
+        this.appViewModel = new ViewModelProvider(this, viewModelFactory).get(AppViewModel.class);
+        this.appViewModel.getAllTasks().observe(this, tasks -> {
+            adapter.updateTasks(tasks);
+            mTasks = (ArrayList<Task>) tasks;
+            updateTasks();
+        });
+        this.appViewModel.getAllProjects().observe(this, projects -> {
+            allProjects = projects;
+            adapter.getAllProjects(projects);
+        });
+    }
+
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
 
         if (dialogEditText != null && dialogSpinner != null) {
@@ -124,8 +124,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             }
             if (taskName.trim().isEmpty()) {
                 dialogEditText.setError(getString(R.string.empty_task_name));
-            }
-            else if (taskProject != null) {
+            } else if (taskProject != null) {
                 Task task = new Task(
                         taskProject.getId(),
                         taskName,
@@ -133,12 +132,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 );
                 addTask(task);
                 dialogInterface.dismiss();
-            }
-            else{
+            } else {
                 dialogInterface.dismiss();
             }
-        }
-        else {
+        } else {
             dialogInterface.dismiss();
         }
     }
@@ -187,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private AlertDialog getAddTaskDialog() {
         final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this, R.style.Dialog);
-
         alertBuilder.setTitle(R.string.add_task);
         alertBuilder.setView(R.layout.dialog_add_task);
         alertBuilder.setPositiveButton(R.string.add, null);

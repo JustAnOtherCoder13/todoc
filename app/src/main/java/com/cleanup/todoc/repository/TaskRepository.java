@@ -15,15 +15,21 @@ public class TaskRepository {
     private final TaskDao taskDao;
     private LiveData<List<Task>> allTasks;
 
-    public TaskRepository (Context context){
+    public TaskRepository(Context context) {
         TaskDatabase taskDatabase = TaskDatabase.getInstance(context);
         taskDao = taskDatabase.taskDao();
         allTasks = taskDao.getAllTasks();
     }
 
-    public LiveData<List<Task>> getAllTasks(){ return allTasks;}
+    public LiveData<List<Task>> getAllTasks() {
+        return allTasks;
+    }
 
-    public void deleteTask(Task task){this.taskDao.deleteTask(task);}
+    public void deleteTask(Task task) {
+        this.taskDao.deleteTask(task);
+    }
 
-    public void createTask(Task task){this.taskDao.insertTask(task);}
+    public void createTask(Task task) {
+        this.taskDao.insertTask(task);
+    }
 }

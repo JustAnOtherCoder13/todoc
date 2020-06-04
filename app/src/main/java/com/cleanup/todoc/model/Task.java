@@ -7,9 +7,10 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
+
 @Entity(tableName = "task_table", foreignKeys = @ForeignKey(entity = Project.class,
-                                                            parentColumns = "id",
-                                                            childColumns = "projectId"))
+        parentColumns = "id",
+        childColumns = "projectId"))
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
@@ -23,7 +24,7 @@ public class Task {
     private String name;
     private long creationTimestamp;
 
-    public Task( long projectId, @NonNull String name, long creationTimestamp) {
+    public Task(long projectId, @NonNull String name, long creationTimestamp) {
         this.setProjectId(projectId);
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
@@ -32,22 +33,35 @@ public class Task {
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
+
     private void setProjectId(long projectId) {
         this.projectId = projectId;
     }
-    public long getProjectId() { return projectId; }
-    @NonNull
-    public String getName() {
-        return name;
+
+    public long getProjectId() {
+        return projectId;
     }
+
+    @NonNull
+    public String getName(){
+            return name;
+    }
+
     private void setName(@NonNull String name) {
         this.name = name;
     }
-    private void setCreationTimestamp(long creationTimestamp) { this.creationTimestamp = creationTimestamp; }
-    public long getCreationTimestamp() { return creationTimestamp; }
+
+    private void setCreationTimestamp(long creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
+    }
+
+    public long getCreationTimestamp() {
+        return creationTimestamp;
+    }
 
     // Sort Tasks inner classes
 

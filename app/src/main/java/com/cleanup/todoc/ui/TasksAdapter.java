@@ -28,7 +28,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
-}
+    }
 
     void updateTasks(@NonNull final List<Task> tasks) {
         this.tasks = tasks;
@@ -98,7 +98,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         void bind(Task task) {
             lblTaskName.setText(task.getName());
             imgDelete.setTag(task);
-
 
             final Project taskProject = getProject(task.getProjectId());
             if (taskProject != null) {

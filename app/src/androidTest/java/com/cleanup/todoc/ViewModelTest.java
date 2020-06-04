@@ -25,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import static com.cleanup.todoc.database.Generator.generateProjects;
 import static com.cleanup.todoc.database.Generator.generateTasks;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -71,15 +72,13 @@ public class ViewModelTest {
         //Ensure live data exist
         assertNotNull(appViewModel.getAllProjects());
         assertNotNull(appViewModel.getAllTasks());
-        //Have observer and correspond to the expected size
+        //and have observer
         assertTrue(appViewModel.getAllTasks().hasObservers());
-        assertEquals(0, appViewModel.getAllTasks().getValue().size());
         assertTrue(appViewModel.getAllProjects().hasObservers());
-        assertEquals(3, appViewModel.getAllProjects().getValue().size());
     }
 
     @Test
-    public void b_createTaskShouldAddTaskToValue() {
+    public void b_createTaskShouldAddTaskToList() {
         //Create a new task
         appViewModel.createTask(TASK);
         //Ensure it is add to task's list
@@ -101,13 +100,29 @@ public class ViewModelTest {
     }
 
     @Test
-    public void d_getTaskShouldReturnTaskList() {
+    public void d_getAllTasksShouldReturnTaskList() {
         //Add three tasks
         appViewModel.createTask(generateTasks().get(0));
         appViewModel.createTask(generateTasks().get(1));
         appViewModel.createTask(generateTasks().get(2));
         //Ensure list size is now three
         assertEquals(3, appViewModel.getAllTasks().getValue().size());
+    }
+    @Test
+    public void getAllProjectsShouldReturnProjectList(){
+        //Ensure the list of project contain 3 project
+        assertEquals(3,appViewModel.getAllProjects().getValue().size());
+        //And matches the corresponding values
+        assertEquals(generateProjects().get(0).getName(),(appViewModel.getAllProjects().getValue().get(0).getName()));
+        assertEquals(generateProjects().get(0).getId(),(appViewModel.getAllProjects().getValue().get(0).getId()));
+        assertEquals(generateProjects().get(0).getColor(),(appViewModel.getAllProjects().getValue().get(0).getColor()));
+        assertEquals(generateProjects().get(1).getName(),(appViewModel.getAllProjects().getValue().get(1).getName()));
+        assertEquals(generateProjects().get(1).getId(),(appViewModel.getAllProjects().getValue().get(1).getId()));
+        assertEquals(generateProjects().get(1).getColor(),(appViewModel.getAllProjects().getValue().get(1).getColor()));
+        assertEquals(generateProjects().get(2).getName(),(appViewModel.getAllProjects().getValue().get(2).getName()));
+        assertEquals(generateProjects().get(2).getId(),(appViewModel.getAllProjects().getValue().get(2).getId()));
+        assertEquals(generateProjects().get(2).getColor(),(appViewModel.getAllProjects().getValue().get(2).getColor()));
+
     }
 }
 

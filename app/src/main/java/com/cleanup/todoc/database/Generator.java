@@ -28,5 +28,4 @@ public abstract class Generator {
     public static List<Task> generateTasks() {
         return new ArrayList<>(TASKS);
     }
-
 }

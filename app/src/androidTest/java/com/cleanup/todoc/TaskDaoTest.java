@@ -46,7 +46,7 @@ public class TaskDaoTest {
     }
 
     @Before
-    public void initDb() {
+    public void setup() {
         Context context = ApplicationProvider.getApplicationContext();
         this.database = Room.inMemoryDatabaseBuilder(context, TaskDatabase.class)
                 .allowMainThreadQueries()

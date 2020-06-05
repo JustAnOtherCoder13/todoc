@@ -18,13 +18,17 @@
 
  ### Add a task.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add a task imediatly add task in list.
-
+![add task](https://github.com/JustAnOtherCoder13/todoc/blob/master/AnimatedGif/add_task.gif)
 
  ### Delete a task.
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Delete all tasks show a "no task" clipart.
-
+![delete task](https://github.com/JustAnOtherCoder13/todoc/blob/master/AnimatedGif/remove_task.gif)
  ### Sort Tasks.
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tasks could be sorted alphabetically or by timestamp.
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tasks could be sorted alphabetically
+ ![sort alphabetically](https://github.com/JustAnOtherCoder13/todoc/blob/master/AnimatedGif/sort_alphabetically.gif)
+ 
+  or by timestamp.
+![sort by date](https://github.com/JustAnOtherCoder13/todoc/blob/master/AnimatedGif/sort_by_date.gif)
 
 
 

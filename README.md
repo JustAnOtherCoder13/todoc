@@ -30,5 +30,12 @@
   or by timestamp.
 ![sort by date](https://github.com/JustAnOtherCoder13/todoc/blob/master/AnimatedGif/sort_by_date.gif)
 
+## 4. Work done
 
++ Migrate to android x.
++ Clean code, remove useless classes and refactor some methods.
++ Use a MVVM architecture.
++ Use SQLite database.
 
+### Link
+To see use case diagram, entity relationship diagram and class diagram, click on the following link : https://slides.com/justanothercoder/deck-771ee6
